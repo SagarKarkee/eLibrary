@@ -96,13 +96,6 @@ a:hover {
     font-size: 20px;
 }
 
-footer {
-    background-color:rgb(44, 80, 66);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-size: 14px;
-}
 
 /* 
 @media (max-width: 768px) {
@@ -139,9 +132,8 @@ footer {
         
         <div class="logo">
             <!-- <p>My Website</p> -->
-            <img src="./image/kishani logo.png" alt="Website Logo" />
+            <img src="./image/logo.png" alt="Website Logo" />
         </div>
-
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -154,7 +146,5 @@ footer {
         </ul>
     </nav>
     </div>
-
-    <?php include 'footer.php'; ?> 
 </body>
 </html>
