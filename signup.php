@@ -11,6 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstname = trim($_POST['firstname']);
     $secondname = trim($_POST['secondname']);
     $phone = trim($_POST['phone']);
+    $role = 'user'; // Default role
+
+    // Handle role assignment (if admin is assigning)
+    if (isset($_POST['role']) && $_POST['role'] === 'admin' && isAdminUser()) {
+        $role = 'admin';
+    }
 
     // Handling profile photo upload
     $upload_dir = 'uploads/';
@@ -39,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($error)) {
         try {
-            $sql = "INSERT INTO users (username, email, password, firstname, secondname, phone, profile_photo) 
-                    VALUES (:username, :email, :password, :firstname, :secondname, :phone, :profile_photo)";
+            $sql = "INSERT INTO users_data (username, email, password, firstname, secondname, phone, profile_photo, role) 
+                    VALUES (:username, :email, :password, :firstname, :secondname, :phone, :profile_photo, :role)";
             $stmt = $conn->prepare($sql);
             $stmt->execute([
                 ':username' => $username,
@@ -49,7 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':firstname' => $firstname,
                 ':secondname' => $secondname,
                 ':phone' => $phone,
-                ':profile_photo' => $profile_photo
+                ':profile_photo' => $profile_photo,
+                ':role' => $role
             ]);
 
             $success = "Account created successfully! Redirecting to login...";
@@ -102,6 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="profile_photo" class="form-label">Profile Photo</label>
                     <input type="file" name="profile_photo" class="form-control" accept="image/*">
                 </div>
+                <!-- Hidden role field for regular users -->
+                <input type="hidden" name="role" value="user">
                 <button type="submit" class="btn btn-primary w-100">Signup</button>
             </form>
             <p class="mt-3 text-center">Already have an account? <a href="login.php">Login here</a>.</p>
